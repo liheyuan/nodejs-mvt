@@ -1,0 +1,30 @@
+{
+  "name": "nodejs-mvt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "NODE_ENV=test nodemon index.js",
+    "start": "NODE_ENV=production pm2 start index.js -i 0 --name $npm_package_name",
+    "stop": "pm2 stop $npm_package_name && pm2 delete $npm_package_name",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liheyuan/nodejs-mvt.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/liheyuan/nodejs-mvt/issues"
+  },
+  "homepage": "https://github.com/liheyuan/nodejs-mvt#readme",
+  "dependencies": {
+    "koa": "^2.13.4",
+    "koa-json-error": "^3.1.2",
+    "koa-router": "^10.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
