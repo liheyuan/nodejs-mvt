@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken')
 const Router = require('koa-router')
-const {JWT_KEY, JWT_EXPIRED} = require('../utils/constant')
+const { JWT_KEY, JWT_EXPIRED } = require('../utils/constant')
 const router = Router()
-
+const { queryOne } = require('../db')
 
 router.prefix('/api/user')
 
@@ -15,14 +15,17 @@ router.get('/', (ctx, next) => {
     }
 })
 
-router.post('/login', (ctx, next) => {
+router.post('/login', async (ctx, next) => {
+
     const user = ctx.request.body.username
     const pass = ctx.request.body.password
-    if (user === 'admin' && pass === '123456') {
+
+    const row = await queryOne("SELECT * FROM `admin_user` WHERE username = ? AND password = ?", [user, pass])
+    if (row) {
         const token = jwt.sign(
-            {user},
+            { user },
             JWT_KEY,
-            {expiresIn: JWT_EXPIRED}
+            { expiresIn: JWT_EXPIRED }
         )
         ctx.body = {
             status: 200,
@@ -31,6 +34,7 @@ router.post('/login', (ctx, next) => {
     } else {
         ctx.throw(401, "Invalid username or password")
     }
+
 })
 
 router.delete('/logout', (ctx, next) => {
