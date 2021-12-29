@@ -12,8 +12,6 @@ router.post('/', async (ctx, next) => {
 
     const show = +ctx.request.body.show
 
-    console.log(ctx.request.body)
-
     await run("INSERT INTO `news`(`title`, `catId`, `tags`, `show`, `content`) VALUES" +
         "(?, ?, ?, ?, ?)", [title, catId, tags, show, content])
 
