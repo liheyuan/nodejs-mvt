@@ -1,6 +1,7 @@
+const md5 = require('crypto-js/md5')
 const jwt = require('jsonwebtoken')
 const Router = require('koa-router')
-const { JWT_KEY, JWT_EXPIRED } = require('../utils/constant')
+const { JWT_KEY, JWT_EXPIRED, PASSWORD_SALT } = require('../utils/constant')
 const router = Router()
 const { queryOne } = require('../db')
 
@@ -18,7 +19,7 @@ router.get('/', (ctx, next) => {
 router.post('/login', async (ctx, next) => {
 
     const user = ctx.request.body.username
-    const pass = ctx.request.body.password
+    const pass = md5(PASSWORD_SALT + ctx.request.body.password).toString()
 
     const row = await queryOne("SELECT * FROM `admin_user` WHERE username = ? AND password = ?", [user, pass])
     if (row) {
