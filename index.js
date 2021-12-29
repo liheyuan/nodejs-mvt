@@ -36,8 +36,8 @@ app.use(jwt({ secret: JWT_KEY })
 app.use(bodyParser())
 
 const user = require('./app/user')
+const news = require('./app/news')
 app.use(user.routes(), user.allowedMethods())
-
-
+app.use(news.routes(), news.allowedMethods())
 
 app.listen(3000)

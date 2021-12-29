@@ -1,0 +1,14 @@
+CREATE TABLE admin_user(
+   id       INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+   username VARCHAR(128) NOT NULL,
+   password VARCHAR(128) NOT NULL
+);
+
+CREATE TABLE news(
+   id    INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+   title VARCHAR(128) NOT NULL,
+   catId INTEGER,
+   tags VARCHAR(256),
+   show BOOLEAN,
+   content TEXT
+);
