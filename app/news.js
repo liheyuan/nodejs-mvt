@@ -20,6 +20,21 @@ router.post('/', async (ctx, next) => {
     }
 })
 
+router.put('/', async (ctx, next) => {
+
+    const { id, title, catId, content } = ctx.request.body
+
+    const tags = ctx.request.body.tags.join(',')
+
+    const show = +ctx.request.body.show
+
+    await run("UPDATE `news` SET `title` = ?, `catId` = ?, `tags` = ?, `show` = ?, `content` = ? WHERE `id` = ?", [title, catId, tags, show, content, id])
+
+    ctx.body = {
+        status: 200
+    }
+})
+
 router.get('/:id', async (ctx, next) => {
     let data = await queryOne("SELECT * FROM `news` WHERE `id` = ?", [ctx.params.id])
     if (data) {
