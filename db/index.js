@@ -2,7 +2,13 @@ const { SQLITE_FILE } = require('../utils/constant')
 const db = require('better-sqlite3')(SQLITE_FILE)
 
 function queryOne(sql, params) {
+    params = params || []
     return db.prepare(sql).get(params)
+}
+
+function queryAll(sql, params) {
+    params = params || []
+    return db.prepare(sql).all(params)
 }
 
 function run(sql, params) {
@@ -19,5 +25,6 @@ process.on('SIGTERM', () => process.exit(128 + 15));
 
 module.exports = {
     queryOne,
+    queryAll,
     run
 }
