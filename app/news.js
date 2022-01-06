@@ -2,7 +2,7 @@ const Router = require('koa-router')
 const { query } = require('koa/lib/request')
 const router = Router()
 const { run, queryOne, queryAll } = require('../db')
-const { convertNews } = require('../utils/util')
+const { convertNews, sqlLike, sqlAnd } = require('../utils/util')
 
 router.prefix('/api/news')
 
@@ -38,17 +38,35 @@ router.put('/', async (ctx, next) => {
 })
 
 router.get('/list', async (ctx, next) => {
-    const {pageSize = 10, currentPage = 1 } = ctx.query
+    const {pageSize = 10, currentPage = 1, title, show } = ctx.query
     const offset = (currentPage - 1) * pageSize
     // sql
     let sql = "SELECT * FROM `news`"
+    let cntSql = 'SELECT COUNT(*) AS cnt FROM `news`'
+    // where cond
+    let where = 'WHERE'
+    const params = []
+    if (title) {
+        where = sqlLike(where, 'title')
+        params.push(`%${title}%`)
+    }
+    if (show) {
+        where = sqlAnd(where, 'show')
+        params.push(show === 'false' ? 0 : 1)
+    }
+    if (where != 'WHERE') {
+        sql = `${sql} ${where}`
+        cntSql = `${cntSql} ${where}`
+    }
+    // page cond
     sql = `${sql} limit ${pageSize} offset ${offset}`
+    
     // data
-    let data = await queryAll(sql)
+    let data = await queryAll(sql, params)
     list = data.map(n => convertNews(n))
 
     // cnt
-    let { cnt } = await queryOne("SELECT COUNT(*) AS cnt FROM `news`")
+    let { cnt } = await queryOne(cntSql, params)
     
     ctx.body = {
         status: 200,

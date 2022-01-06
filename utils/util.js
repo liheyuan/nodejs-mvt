@@ -5,6 +5,25 @@ function convertNews(news) {
     return news
 }
 
+function sqlAnd(where, k) {
+    if (where === 'WHERE') {
+      return `${where} \`${k}\` = ?`
+    } else {
+      return `${where} AND \`${k}\` = ?`
+    }
+}
+
+function sqlLike(where, k) {
+    if (where === 'WHERE') {
+      return `${where} \`${k}\` LIKE ?`
+    } else {
+      return `${where} AND \`${k}\` LIKE ?`
+    }
+}
+
+
 module.exports = {
-    convertNews
+    convertNews,
+    sqlAnd,
+    sqlLike
 }

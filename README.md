@@ -6,7 +6,7 @@ It is used to show the most common problem in Node.js Backend Development. The l
 * nodemon / pm2
 * koa / koa router
 * JWT
-* MySQL
+* sqlite
 ## Framework 
 ```
 cnpm i nodemon --save-dev
